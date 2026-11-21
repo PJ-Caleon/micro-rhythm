@@ -1,0 +1,17 @@
+name: micro-rhythm-test 
+on: [push, pull_request]
+jobs:
+  host-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run the active host tests
+        run: make test-active
+  firmware:
+    runs-on: ubuntu-latest
+    steps: 
+      - uses: actions/checkout@v4
+      - name: Install
+        run: sudo apt-get update && sudo apt-get install -y gcc-arm-none-eabi
+      - name: Build 
+        run: make firmware && make size
