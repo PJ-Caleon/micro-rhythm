@@ -1,5 +1,5 @@
-#include "../unity/unity.h"
-#include "../include/add.h"
+#include "unity.h"
+#include "add.h"
 
 void setUp(void){}
 void tearDown(void){}
