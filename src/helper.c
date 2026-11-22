@@ -16,3 +16,22 @@ int wait_flag(volatile uint32_t *reg, uint32_t mask, int want_set, uint32_t trie
   }
   return -1;
 }
+
+unsigned pin_shift(unsigned pin){
+  return (pin & 7u) * 4u;
+}
+
+void gpio_cfg(GPIO_TypeDef *g, unsigned pin, unsigned mode){
+  g->MODER = field_set(g->MODER, pin * 2u, 2u, mode & 3u);
+  g->OTYPER = field_set(g->OTYPER, pin, 1u, (mode >> 2) & 1u);
+  g->PUPDR = field_set(g->PUPDR, pin * 2u, 2u, (mode >> 3) & 3u);
+}
+
+void gpio_af(GPIO_TypeDef *g, unsigned pin, unsigned af){
+  volatile uint32_t *reg = (pin < 8u) ? &g->AFRL : &g->AFRH;
+  *reg = field_set(*reg, pin_shift(pin), 4u, af);
+}
+
+uint32_t elapsed(uint32_t now, uint32_t start){
+  return now - start;
+}
