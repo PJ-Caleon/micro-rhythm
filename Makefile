@@ -30,6 +30,14 @@ size: build/firmware.elf
 flash: build/firmware.elf 
 	openocd -f interface/stlink.cfg -f target/stm32f4x.cfg -c "program build/firmware.elf verify reset exit"
 
+.PHONY: gdb 
+gdb: build/firmware.elf 
+	arm-none-eabi-gdb -q \
+		-ex "target extended-remote :3333" \
+		-ex "monitor reset halt" \
+		-ex "load" \ 
+		build/firmware.elf
+
 .PHONY: t test-active test-all firmware size flash clean
 clean:
 	rm -rf build

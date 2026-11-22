@@ -1,5 +1,7 @@
-#include <stdio.h>
+#include <stdint.h>
+
+uint32_t a = 10;
 
 int main(void){
-  return 0;
+  return a * 20;
 }
