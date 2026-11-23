@@ -29,12 +29,12 @@ RTOS_SRC  := $(RTOS_DIR)/tasks.c \
 RTOS_INC := -Irtos/config -I$(RTOS_DIR)/include -I$(RTOS_PORT)
 
 CFLAGS = $(CPU) -Os -g -std=gnu11 -Wall -Wextra -ffreestanding -fno-tree-loop-distribute-patterns -ffunction-sections -fdata-sections -Iinclude $(RTOS_INC)
-LDFLAGS = $(CPU) -nostdlib -T stm32f401.ld -Wl,-Map=build/firmware.map -Wl,--gc-sections
+LDFLAGS = $(CPU) -nostdlib --specs=nano.specs -T stm32f401.ld -Wl,-Map=build/firmware.map -Wl,--gc-sections
 FW_SRC = $(wildcard src/*.c) $(RTOS_SRC)
 
 build/firmware.elf: $(FW_SRC) $(wildcard include/*.h rtos/config/*.h) stm32f401.ld
 	@mkdir -p build
-	$(CROSS)gcc $(CFLAGS) $(FW_SRC) $(LDFLAGS) -lgcc -o $@
+	$(CROSS)gcc $(CFLAGS) $(FW_SRC) $(LDFLAGS) -Wl,--start-group -lc -lgcc -Wl,--end-group -o $@
 
 build/firmware.bin: build/firmware.elf
 	$(CROSS)objcopy -O binary $< $@
