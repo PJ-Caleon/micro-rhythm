@@ -1,8 +1,9 @@
 #include "clock.h"
 #include "helper.h"
 #include "stm32f401.h"
+#include "FreeRTOS.h"
+#include "task.h"
 
-static volatile uint32_t g_ms;
 #define WAIT_TRIES 100000u
 
 uint32_t clock_pllcfgr_word(void){
@@ -19,10 +20,6 @@ uint32_t clock_cfgr_word(void){
   w = field_set(w, RCC_CFGR_PPRE1_Pos, 3u, 4u); // APB1 = 84/2 = 42 MHz 
   w = field_set(w, RCC_CFGR_PPRE2_Pos, 3u, 0u); // APB2 = 84 MHz
   return w;
-}
-
-uint32_t tick_reload(uint32_t clk_hz, uint32_t tick_hz){
-  return (clk_hz/ tick_hz) - 1u;
 }
 
 int clock_init(void){
@@ -46,15 +43,12 @@ int clock_init(void){
     return -1;
   }
 
-  SYSTICK->LOAD = tick_reload(SYSCLK_HZ, 1000u);
-  SYSTICK->VAL = 0u;
-  SYSTICK->CTRL = SYSTICK_ENABLE | SYSTICK_TICKINT | SYSTICK_CLKSRC;
   return 0;
 }
 
-void SysTick_Handler(void) {
-  g_ms++;
-}
 uint32_t millis(void){
-  return g_ms;
+  if (xTaskGetSchedulerState() == taskSCHEDULER_NOT_STARTED){
+    return 0u;
+  }
+  return (uint32_t)xTaskGetTickCount();
 }

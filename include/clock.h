@@ -5,7 +5,6 @@
 
 uint32_t clock_pllcfgr_word(void);
 uint32_t clock_cfgr_word(void);
-uint32_t tick_reload(uint32_t clk_hz, uint32_t tick_hz);
 int clock_init(void);
 void SysTick_Handler(void);
 uint32_t millis(void);
