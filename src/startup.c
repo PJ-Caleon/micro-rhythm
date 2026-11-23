@@ -3,6 +3,10 @@
 extern uint32_t _estack, _sidata, _sdata, _edata, _sbss, _ebss;
 extern int main(void);
 
+extern void vPortSVCHandler(void);
+extern void xPortPendSVHandler(void);
+extern void xPortSysTickHandler(void);
+
 void Reset_Handler(void);
 void Default_Handler(void);
 void NMI_Handler(void)        __attribute__((weak, alias("Default_Handler")));
@@ -10,10 +14,7 @@ void HardFault_Handler(void)  __attribute__((weak, alias("Default_Handler")));
 void MemManage_Handler(void)  __attribute__((weak, alias("Default_Handler")));
 void BusFault_Handler(void)   __attribute__((weak, alias("Default_Handler")));
 void UsageFault_Handler(void) __attribute__((weak, alias("Default_Handler")));
-void SVC_Handler(void)        __attribute__((weak, alias("Default_Handler")));
 void DebugMon_Handler(void)   __attribute__((weak, alias("Default_Handler")));
-void PendSV_Handler(void)     __attribute__((weak, alias("Default_Handler")));
-void SysTick_Handler(void)    __attribute__((weak, alias("Default_Handler")));
 
 typedef void (*isr_t)(void);
 
@@ -27,11 +28,11 @@ const isr_t vectors[16] = {
     BusFault_Handler,      /* 5  BusFault      */
     UsageFault_Handler,    /* 6  UsageFault    */
     0, 0, 0, 0,            /* 7-10 reserved    */
-    SVC_Handler,           /* 11 SVCall        */
+    vPortSVCHandler,           /* 11 SVCall        */
     DebugMon_Handler,      /* 12 DebugMon      */
     0,                     /* 13 reserved      */
-    PendSV_Handler,        /* 14 PendSV        */
-    SysTick_Handler,       /* 15 SysTick       */
+    xPortPendSVHandler,        /* 14 PendSV        */
+    xPortSysTickHandler,       /* 15 SysTick       */
 };
 
 void Reset_Handler(void){

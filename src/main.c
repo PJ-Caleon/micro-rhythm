@@ -2,8 +2,15 @@
 #include "clock.h"
 #include "gpio.h"
 #include "helper.h"
+#include "FreeRTOS.h"
+#include "task.h"
 
-uint32_t a = 10;
+void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName){
+  (void)xTask;
+  (void)pcTaskName;
+  taskDISABLE_INTERRUPTS();
+  for(;;){}
+}
 
 int main(void){
   // setup 
