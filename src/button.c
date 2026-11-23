@@ -1,8 +1,11 @@
 #include "button.h"
 #include "helper.h"
 #include "game_config.h"
+
+#ifndef UNIT_TEST
 #include "FreeRTOS.h"
 #include "task.h"
+#endif
 
 int debounce(debounce_t *d, uint8_t raw, uint32_t now_ms){
   raw = (raw != 0);
@@ -22,6 +25,7 @@ uint8_t buttons_read(void){
   return (uint8_t)(((~GPIOB->IDR) >> 12) & 3u);
 }
 
+#ifndef UNIT_TEST
 void button_task(void *arg){
   TaskHandle_t target = (TaskHandle_t)arg;
   static debounce_t db[2u];
@@ -39,3 +43,4 @@ void button_task(void *arg){
     vTaskDelayUntil(&last_wake, pdMS_TO_TICKS(5u));
   }
 }
+#endif

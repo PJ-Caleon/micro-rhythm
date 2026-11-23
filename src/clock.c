@@ -1,8 +1,11 @@
 #include "clock.h"
 #include "helper.h"
 #include "stm32f401.h"
+
+#ifndef UNIT_TEST 
 #include "FreeRTOS.h"
 #include "task.h"
+#endif
 
 #define WAIT_TRIES 100000u
 
@@ -47,8 +50,12 @@ int clock_init(void){
 }
 
 uint32_t millis(void){
+#ifdef UNIT_TEST
+  return 0u;
+#else 
   if (xTaskGetSchedulerState() == taskSCHEDULER_NOT_STARTED){
     return 0u;
   }
   return (uint32_t)xTaskGetTickCount();
+#endif
 }
