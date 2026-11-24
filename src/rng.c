@@ -1,10 +1,11 @@
 #include "rng.h"
 
-int random(uint16_t pre_seed){
-  static uint16_t seed = 1;
-  static uint16_t last_pre_seed = 0;
+int64_t random(uint32_t pre_seed){
+  static uint32_t seed = 1;
+  static uint32_t last_pre_seed = 0;
+  uint32_t out = 0;
 
-  if(pre_seed == 0x0000){
+  if(pre_seed == 0x0u){
     return -1;
   }
 
@@ -13,9 +14,12 @@ int random(uint16_t pre_seed){
     last_pre_seed = pre_seed;
   }
 
-  uint16_t new = (uint16_t)((seed & 1u) ^ ((seed >> 1) & 1u));
-  seed = seed >> 1;
-  seed = (uint16_t)((seed) | (new << 15));
-  uint16_t out = (uint16_t)(seed & 1u);
-  return out;
+  for (int i = 0; i < 32; i++){
+    uint32_t new = (seed & 1u) ^ ((seed >> 1) & 1u);
+    seed = seed >> 1;
+    seed = (seed) | (new << 31);
+    uint32_t bit = seed & 1u;
+    out |= bit << i;
+  }
+  return (int64_t)out;
 }
