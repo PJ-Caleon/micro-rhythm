@@ -1,7 +1,7 @@
 HOSTCC ?= gcc
 HFLAGS   = -std=gnu11 -Wall -Wextra -g -O0 -DUNIT_TEST -Iinclude -Iunity
 HOST_SRC = $(filter-out src/startup.c src/main.c,$(wildcard src/*.c))
-SUPPORT  = unity/unity.c
+SUPPORT  = unity/unity.c test/test_fake.c
 
 # To add new test script, run make build/"test_name" in root
 build/test_%: test/test_%.c $(HOST_SRC) $(SUPPORT) $(wildcard include/*.h test/*.h)

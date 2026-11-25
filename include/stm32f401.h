@@ -130,14 +130,21 @@ typedef struct {
 
 /* ======================= Peripheral Pointers ======================= */
 #define GPIOA   ((GPIO_TypeDef *)GPIOA_BASE)
+#ifdef UNIT_TEST 
+extern GPIO_TypeDef fake_gpiob;
+extern DMA_TypeDef fake_dma2;
+#define GPIOB (&fake_gpiob)
+#define DMA2 (&fake_dma2)
+#else
 #define GPIOB   ((GPIO_TypeDef *)GPIOB_BASE)
+#define DMA2    ((DMA_TypeDef *)DMA2_BASE)
+#endif
 #define RCC     ((RCC_TypeDef *)RCC_BASE)
 #define ADC1    ((ADC_TypeDef *)ADC1_BASE)
 #define ADC_CCR (*(volatile uint32_t *)(ADC_COMMON_BASE + 0x04u))
 #define TIM1    ((TIM_TypeDef *)TIM1_BASE)    /* free-running counter (RNG seed) */
 #define TIM2    ((TIM_TypeDef *)TIM2_BASE)    /* 1 kHz ADC trigger (TRGO) */
 #define DMA1    ((DMA_TypeDef *)DMA1_BASE)    /* I2C1_TX: S6, CH1 */
-#define DMA2    ((DMA_TypeDef *)DMA2_BASE)    /* ADC1: S0, CH0 */
 #define I2C1    ((I2C_TypeDef *)I2C1_BASE)
 #define FLASH   ((FLASH_TypeDef *)FLASH_BASE_R)
 #define EXTI    ((EXTI_TypeDef *)EXTI_BASE)
