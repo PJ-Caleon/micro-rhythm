@@ -35,3 +35,7 @@ void gpio_af(GPIO_TypeDef *g, unsigned pin, unsigned af){
 uint32_t elapsed(uint32_t now, uint32_t start){
   return now - start;
 }
+
+unsigned smpr_field(unsigned channel){
+  return (channel < 10u)? (channel*3u) : (channel - 10u) * 3u;
+}

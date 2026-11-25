@@ -23,5 +23,6 @@ void gpio_cfg(GPIO_TypeDef *g, unsigned pin, unsigned mode);
 void gpio_af(GPIO_TypeDef *g, unsigned pin, unsigned af);
 unsigned pin_shift(unsigned pin);
 uint32_t elapsed(uint32_t now, uint32_t start);
+unsigned smpr_field(unsigned channel);
 
 #endif

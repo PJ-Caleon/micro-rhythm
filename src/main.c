@@ -3,6 +3,8 @@
 #include "gpio.h"
 #include "helper.h"
 #include "button.h"
+#include "adc.h"
+#include "dma.h"
 #include "FreeRTOS.h"
 #include "task.h"
 
@@ -29,6 +31,9 @@ int main(void){
   
   gpio_clock_init();
   buttons_init();
+
+  dma_init();
+  adc_init();
 
   xTaskCreate(game_task,   "game", 256, NULL,                 tskIDLE_PRIORITY + 1, &game_handle);
   xTaskCreate(button_task, "btn",  128, (void *)game_handle,  tskIDLE_PRIORITY + 2, NULL);
