@@ -31,6 +31,7 @@ int main(void){
   
   gpio_clock_init();
   buttons_init();
+  pot_init();
 
   dma_init();
   adc_init();

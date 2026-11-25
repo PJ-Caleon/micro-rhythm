@@ -24,5 +24,6 @@ void gpio_af(GPIO_TypeDef *g, unsigned pin, unsigned af);
 unsigned pin_shift(unsigned pin);
 uint32_t elapsed(uint32_t now, uint32_t start);
 unsigned smpr_field(unsigned channel);
+unsigned set_threshold(unsigned high, unsigned low, unsigned val);
 
 #endif

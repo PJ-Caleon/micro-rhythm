@@ -39,3 +39,12 @@ uint32_t elapsed(uint32_t now, uint32_t start){
 unsigned smpr_field(unsigned channel){
   return (channel < 10u)? (channel*3u) : (channel - 10u) * 3u;
 }
+
+unsigned set_threshold(unsigned high, unsigned low, unsigned val){
+  if(val > high){
+    return high;
+  } else if (val < low){
+    return low;
+  }
+  return val;
+}
