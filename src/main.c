@@ -10,6 +10,15 @@
 
 static TaskHandle_t game_handle;
 
+static void blink_test(void *arg){
+  (void)arg;
+
+  for(;;){
+   GPIOC->ODR ^= (1u << 13);
+   vTaskDelay(pdMS_TO_TICKS(100));
+  }
+}
+
 void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName){
   (void)xTask;
   (void)pcTaskName;
@@ -32,12 +41,15 @@ int main(void){
   gpio_clock_init();
   buttons_init();
   pot_init();
+  led_init();
 
   dma_init();
   adc_init();
 
+  xTaskCreate(blink_test, "blink", 128, NULL, tskIDLE_PRIORITY + 1, NULL);
   xTaskCreate(game_task,   "game", 256, NULL,                 tskIDLE_PRIORITY + 1, &game_handle);
   xTaskCreate(button_task, "btn",  128, (void *)game_handle,  tskIDLE_PRIORITY + 2, NULL);
 
   vTaskStartScheduler();
+  for(;;){}
 }

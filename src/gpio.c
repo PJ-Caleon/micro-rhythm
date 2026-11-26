@@ -4,7 +4,12 @@
 void gpio_clock_init(void){
   RCC->AHB1ENR |= RCC_AHB1ENR_GPIOBEN;
   RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
+  RCC->AHB1ENR |= RCC_AHB1ENR_GPIOCEN;
   (void)RCC->AHB1ENR;
+}
+
+void led_init(void){
+  gpio_cfg(GPIOC, 13u, GPIO_OUT_OD);
 }
 
 void buttons_init(void){

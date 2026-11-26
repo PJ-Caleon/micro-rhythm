@@ -18,6 +18,7 @@
 /* AHB1 */
 #define GPIOA_BASE    0x40020000u
 #define GPIOB_BASE    0x40020400u
+#define GPIOC_BASE    0x40020800u 
 #define CRC_BASE      0x40023000u
 #define RCC_BASE      0x40023800u
 #define FLASH_BASE_R  0x40023C00u
@@ -130,6 +131,7 @@ typedef struct {
 
 /* ======================= Peripheral Pointers ======================= */
 #define GPIOA   ((GPIO_TypeDef *)GPIOA_BASE)
+#define GPIOC   ((GPIO_TypeDef *)GPIOC_BASE)
 #ifdef UNIT_TEST 
 extern GPIO_TypeDef fake_gpiob;
 extern DMA_TypeDef fake_dma2;
@@ -182,6 +184,7 @@ extern DMA_TypeDef fake_dma2;
 /* RCC enable bits */
 #define RCC_AHB1ENR_GPIOAEN  BIT(0)
 #define RCC_AHB1ENR_GPIOBEN  BIT(1)
+#define RCC_AHB1ENR_GPIOCEN  BIT(2)
 #define RCC_AHB1ENR_CRCEN    BIT(12)
 #define RCC_AHB1ENR_DMA1EN   BIT(21)
 #define RCC_AHB1ENR_DMA2EN   BIT(22)
