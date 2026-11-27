@@ -74,10 +74,17 @@ uint8_t spawn_pos(char *spawn_str){
 
 uint8_t is_collision(uint8_t obj_x, uint8_t obj_y, uint32_t ply_x, uint8_t ply_press){
   // min and max of ply_x and check if the obj_x is in range 
-  uint8_t ply_min = ply_x - PLAYER_WIDTH/2;
-  uint8_t ply_max = ply_x + PLAYER_WIDTH/2;
+  int32_t ply_min = (int32_t)ply_x - PLAYER_WIDTH/2;
+  int32_t ply_max = (int32_t)ply_x + PLAYER_WIDTH/2;
 
-  if (!(ply_min < obj_x && obj_x < ply_max)){
+  int32_t obj_min = (int32_t)obj_x - HIT_RADIUS_X/2; 
+  int32_t obj_max = (int32_t)obj_x + HIT_RADIUS_X/2;
+
+  if (ply_max < obj_min || ply_min > obj_max){
+    return 0;
+  }
+
+  if ((!ply_press) || !(obj_y <= HIT_RADIUS_Y)){
     return 0;
   }
   return 1;

@@ -1,5 +1,7 @@
 #include <unity.h>
+#include "game_config.h"
 #include "game_logic.h"
+
 
 void setUp(void) {}
 void tearDown(void) {}
@@ -41,7 +43,20 @@ void test_pos_not_found(void){
 }
 
 void test_collision_x_out(void){
-  TEST_ASSERT_EQUAL_UINT8(0, is_collision(6, 0, 3, 0));
+  TEST_ASSERT_EQUAL_UINT8(0, is_collision(7, 1, 3, 1));
+  TEST_ASSERT_EQUAL_UINT8(0, is_collision(100, 1, 3, 1));
+}
+
+void test_collision_y_out(void){
+  TEST_ASSERT_EQUAL_UINT8(0, is_collision(10, HIT_RADIUS_Y + 3, 10, 1));
+  TEST_ASSERT_EQUAL_UINT8(0, is_collision(10, HIT_RADIUS_Y, 10, 0));
+  TEST_ASSERT_EQUAL_UINT8(0, is_collision(10, HIT_RADIUS_Y + 1, 10, 1));
+}
+
+void test_collision_hit(void){
+  TEST_ASSERT_EQUAL_UINT8(1, is_collision(6, 1, 3, 1));    
+  TEST_ASSERT_EQUAL_UINT8(1, is_collision(0, 1, 0, 1));
+  TEST_ASSERT_EQUAL_UINT8(1, is_collision(10, HIT_RADIUS_Y, 10, 1));
 }
 
 int main(void){
@@ -58,5 +73,7 @@ int main(void){
   RUN_TEST(test_pos_not_found);
 
   RUN_TEST(test_collision_x_out);
+  RUN_TEST(test_collision_y_out);
+  RUN_TEST(test_collision_hit);
   return UNITY_END();
 }

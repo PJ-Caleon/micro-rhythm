@@ -3,7 +3,6 @@
 
 #include <stdint.h>
 
-
 uint32_t game_clock(void);
 uint8_t object_falling(uint32_t speed);
 const char* spawn(uint32_t speed, uint32_t seed);
