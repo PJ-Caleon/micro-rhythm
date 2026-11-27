@@ -6,6 +6,7 @@
 
 static uint32_t previous_clock = 0;
 static uint8_t y = 64;
+uint32_t score = 0;
 
 uint32_t game_clock(void){
   uint32_t clock = millis(); 
@@ -88,4 +89,8 @@ uint8_t is_collision(uint8_t obj_x, uint8_t obj_y, uint32_t ply_x, uint8_t ply_p
     return 0;
   }
   return 1;
+}
+
+void scored(uint32_t hit){
+  score = score + hit;
 }
