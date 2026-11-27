@@ -30,24 +30,31 @@ uint8_t object_falling(uint32_t speed){
   return y;
 }
 
-uint32_t spawn(uint32_t speed){
-  uint32_t seed_pos = random(0xABCDABCD);  
-  uint32_t size = numsize(seed_pos);
-  uint32_t spawn_val = 0;
+const char* spawn(uint32_t speed, uint32_t seed){
+  static char spawn_str[11];
 
-  // parse number to separate digits
+  uint32_t size = numsize(seed);
+
+  uint8_t  max_digit = 0;
+  uint32_t max_pos   = 0;                   
+
+  // parse number to separate digits 
   for (uint32_t i = 0; i < size; i++){
-    uint8_t bit = seed_pos % 10; 
-    seed_pos = seed_pos / 10; 
+    uint8_t digit = seed % 10;
+    seed = seed / 10;
 
-    if (bit > 8){
-      bit = 1; 
-    } else {
-      bit = 0;
+    if (digit >= max_digit){
+      max_digit = digit;
+      max_pos   = i;
     }
-  
-    spawn_val = spawn_val * 10 + bit;        
   }
-  
-  return spawn_val; 
+
+  // 0 everywhere, then a 1 at the position of the highest digit
+  for (uint32_t i = 0; i < size; i++){
+    spawn_str[i] = '0';
+  }
+  spawn_str[size - 1 - max_pos] = '1';       
+  spawn_str[size] = '\0';
+
+  return spawn_str;
 }

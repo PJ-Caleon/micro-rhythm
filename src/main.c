@@ -28,8 +28,6 @@ static void serial_task(void *arg){
     //serial_print("button", buttons_read());
     //serial_print("falling", object_falling(1));
     //serial_print("rng", random(0xABCDABCD));
-    
-    serial_print("spawn",spawn(50));
 
     vTaskDelay(pdMS_TO_TICKS(200));
   }
