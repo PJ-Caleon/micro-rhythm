@@ -1,4 +1,5 @@
 #include "game_logic.h"
+#include "game_config.h"
 #include "clock.h"
 #include "rng.h"
 #include "helper.h"
@@ -57,4 +58,27 @@ const char* spawn(uint32_t speed, uint32_t seed){
   spawn_str[size] = '\0';
 
   return spawn_str;
+}
+
+uint8_t spawn_pos(char *spawn_str){
+  uint8_t x = 0;
+
+  while (spawn_str[x] != '\0'){
+    if (spawn_str[x] == '1'){
+      return x;                  
+    }
+    x++;
+  }
+  return 0xFF;
+}
+
+uint8_t is_collision(uint8_t obj_x, uint8_t obj_y, uint32_t ply_x, uint8_t ply_press){
+  // min and max of ply_x and check if the obj_x is in range 
+  uint8_t ply_min = ply_x - PLAYER_WIDTH/2;
+  uint8_t ply_max = ply_x + PLAYER_WIDTH/2;
+
+  if (!(ply_min < obj_x && obj_x < ply_max)){
+    return 0;
+  }
+  return 1;
 }

@@ -24,7 +24,7 @@ void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName){
 static void serial_task(void *arg){
   (void)arg; 
   for (;;){
-    //serial_print("pot",    player_position());  
+    serial_print("pot",    player_position());  
     //serial_print("button", buttons_read());
     //serial_print("falling", object_falling(1));
     //serial_print("rng", random(0xABCDABCD));
