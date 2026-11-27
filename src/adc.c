@@ -5,24 +5,29 @@
 
 void adc_init(void){
   RCC->APB2ENR |= RCC_APB2ENR_ADC1EN;
-  (void)RCC->APB2ENR;
+  RCC->APB1ENR |= RCC_APB1ENR_TIM2EN;
+  (void)RCC->APB1ENR;
 
-  // prescaler set to 21 MHz (max is 36 MHz)
-  ADC_CCR = field_set(ADC_CCR, ADC_CCR_ADCPRE_Pos, 2u, 1u); 
-  // set sample time for channel 1 
+  ADC_CCR = field_set(ADC_CCR, ADC_CCR_ADCPRE_Pos, 2u, 1u);
+  
   ADC1->SMPR2 = field_set(ADC1->SMPR2, smpr_field(1u), 3u, 4u);
   ADC1->SQR1 = 0u;
   ADC1->SQR3 = field_set(ADC1->SQR3, 0u, 5u, 1u);
 
-  // Enable DMA + DDS 
-  uint32_t cr2 = ADC_CR2_DMA | ADC_CR2_DDS; 
+  uint32_t cr2 = ADC_CR2_DMA | ADC_CR2_DDS;
   cr2 = field_set(cr2, ADC_CR2_EXTSEL_Pos, 4u, 6u);
   cr2 = field_set(cr2, ADC_CR2_EXTEN_Pos, 2u, 1u);
   ADC1->CR2 = cr2;
 
-  // Power on and wait for ADC stability 
+  TIM2->PSC = 83u;
+  TIM2->ARR = 999u;
+  TIM2->CR2 = field_set(TIM2->CR2, TIM_CR2_MMS_Pos, 3u, 2u);
+  TIM2->EGR = TIM_EGR_UG;          
+
   ADC1->CR2 |= ADC_CR2_ADON;
   for (volatile int i = 0; i < 1000; i++){}
+
+  TIM2->CR1 |= TIM_CR1_CEN;
 }
 
 int adc_read(uint16_t *out){

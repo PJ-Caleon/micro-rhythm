@@ -15,6 +15,7 @@
 #define ADC_COMMON_BASE 0x40012300u
 #define SYSCFG_BASE   0x40013800u
 #define EXTI_BASE     0x40013C00u
+#define USART1_BASE   0x40011000u
 /* AHB1 */
 #define GPIOA_BASE    0x40020000u
 #define GPIOB_BASE    0x40020400u
@@ -95,6 +96,10 @@ typedef struct {
   volatile uint32_t BDTR, DCR, DMAR;                                    /* 0x44..0x4C */
 } TIM_TypeDef;
 
+typedef struct {
+  volatile uint32_t SR, DR, BRR, CR1, CR2, CR3, GTPR;
+} USART_TypeDef;
+
 /* One DMA stream (F4 has streams 0-7, each with a CHSEL channel 0-7) */
 typedef struct {
   volatile uint32_t CR, NDTR, PAR, M0AR, M1AR, FCR;    /* 0x18 bytes */
@@ -151,6 +156,7 @@ extern DMA_TypeDef fake_dma2;
 #define SYSCFG  ((SYSCFG_TypeDef *)SYSCFG_BASE)
 #define CRC     ((CRC_TypeDef *)CRC_BASE)
 #define SYSTICK ((Systick_TypeDef *)SYSTICK_BASE)
+#define USART1  ((USART_TypeDef *)USART1_BASE)
 
 /* ======================= IRQ numbers (for NVIC) ======================= */
 #define DMA1_Stream6_IRQn  17
@@ -190,6 +196,7 @@ extern DMA_TypeDef fake_dma2;
 #define RCC_APB2ENR_TIM1EN   BIT(0)
 #define RCC_APB2ENR_ADC1EN   BIT(8)
 #define RCC_APB2ENR_SYSCFGEN BIT(14)
+#define RCC_APB2ENR_USART1EN BIT(4)
 
 /* Systick enable bits */
 #define SYSTICK_ENABLE BIT(0)
@@ -229,6 +236,13 @@ extern DMA_TypeDef fake_dma2;
 #define ADC_CR2_EXTEN_Pos  28u      /* 2 bits: 0=off, 1=rising, 2=falling, 3=both */
 #define ADC_CR2_SWSTART    BIT(30)
 #define ADC_CCR_ADCPRE_Pos 16u      /* 2 bits: 0=/2, 1=/4 (use this: ADCCLK max 36MHz), 2=/6, 3=/8 */
+
+/* USART */
+#define USART_SR_TXE   BIT(7)
+#define USART_SR_TC    BIT(6)
+#define USART_CR1_RE   BIT(2)
+#define USART_CR1_TE   BIT(3)
+#define USART_CR1_UE   BIT(13)
 
 /* TIM */
 #define TIM_CR1_CEN        BIT(0)

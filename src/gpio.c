@@ -28,3 +28,15 @@ void oled_init(void){
   GPIOB->OSPEEDR = field_set(GPIOB->OSPEEDR, 6u * 2u, 2u, 2u);
   GPIOB->OSPEEDR = field_set(GPIOB->OSPEEDR, 7u * 2u, 2u, 2u);
 }
+
+void usart1_init(void){
+  // USART1 TX 
+  gpio_cfg(GPIOA, 9u, GPIO_AF_PP);
+  gpio_af(GPIOA, 9u, 7u);
+
+  // USART1 RX
+  gpio_cfg(GPIOA, 10u, GPIO_MODE(2u, 0u, 1u));
+  gpio_af(GPIOA, 10u, 7u);
+
+  GPIOA->OSPEEDR = field_set(GPIOA->OSPEEDR, 9u * 2u, 2u, 2u);
+}

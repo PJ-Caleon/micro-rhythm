@@ -5,6 +5,8 @@
 #include "button.h"
 #include "adc.h"
 #include "dma.h"
+#include "usart.h"
+#include "controller.h"
 #include "FreeRTOS.h"
 #include "task.h"
 
@@ -15,6 +17,15 @@ void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName){
   (void)pcTaskName;
   taskDISABLE_INTERRUPTS();
   for(;;){}
+}
+
+static void serial_task(void *arg){
+  (void)arg; 
+  for (;;){
+    serial_print("pot",    player_position());  
+    //serial_print("button", buttons_read());
+    vTaskDelay(pdMS_TO_TICKS(200));
+  }
 }
 
 static void game_task(void *arg){
@@ -35,9 +46,11 @@ int main(void){
 
   dma_init();
   adc_init();
+  usart_init();
 
   xTaskCreate(game_task,   "game", 256, NULL,                 tskIDLE_PRIORITY + 1, &game_handle);
   xTaskCreate(button_task, "btn",  128, (void *)game_handle,  tskIDLE_PRIORITY + 2, NULL);
+  xTaskCreate(serial_task, "serial", 128, NULL, tskIDLE_PRIORITY + 1, NULL);
 
   vTaskStartScheduler();
 }

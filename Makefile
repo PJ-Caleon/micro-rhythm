@@ -46,6 +46,9 @@ size: build/firmware.elf
 flash: build/firmware.elf
 	openocd -f interface/stlink.cfg -f target/stm32f4x.cfg -c "program build/firmware.elf verify reset exit"
 
+usart: 
+	picocom -b 115200 /dev/ttyUSB0
+
 .PHONY: gdb
 gdb: build/firmware.elf
 	arm-none-eabi-gdb -q \
