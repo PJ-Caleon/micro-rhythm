@@ -7,6 +7,7 @@
 #include "dma.h"
 #include "usart.h"
 #include "controller.h"
+#include "rng.h"
 #include "FreeRTOS.h"
 #include "task.h"
 
@@ -22,8 +23,9 @@ void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName){
 static void serial_task(void *arg){
   (void)arg; 
   for (;;){
-    serial_print("pot",    player_position());  
+    //serial_print("pot",    player_position());  
     //serial_print("button", buttons_read());
+    serial_print("rng", random(0xABCDABCDu));
     vTaskDelay(pdMS_TO_TICKS(200));
   }
 }
