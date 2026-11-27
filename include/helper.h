@@ -25,5 +25,6 @@ unsigned pin_shift(unsigned pin);
 uint32_t elapsed(uint32_t now, uint32_t start);
 unsigned smpr_field(unsigned channel);
 unsigned set_threshold(unsigned high, unsigned low, unsigned val);
+uint32_t numsize(uint32_t number);
 
 #endif

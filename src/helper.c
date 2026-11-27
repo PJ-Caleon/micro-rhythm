@@ -48,3 +48,12 @@ unsigned set_threshold(unsigned high, unsigned low, unsigned val){
   }
   return val;
 }
+
+uint32_t numsize(uint32_t number){
+  uint32_t digit = 0;
+  while (number > 0){
+    number = number / 10; 
+    digit++;
+  }
+  return digit;
+}
