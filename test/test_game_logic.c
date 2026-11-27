@@ -59,6 +59,30 @@ void test_collision_hit(void){
   TEST_ASSERT_EQUAL_UINT8(1, is_collision(10, HIT_RADIUS_Y, 10, 1));
 }
 
+void test_score(void){
+  TEST_ASSERT_EQUAL_UINT8(0, score);
+  scored(1);
+  TEST_ASSERT_EQUAL_UINT8(1, score);
+}
+
+void test_health(void){
+  TEST_ASSERT_EQUAL_UINT8(5, player_health);
+  health(1);
+  TEST_ASSERT_EQUAL_UINT8(5, player_health);
+  health(0);
+  TEST_ASSERT_EQUAL_UINT8(4, player_health);
+  health(0);
+  health(0);
+  health(0);
+  TEST_ASSERT_EQUAL_UINT8(1, player_health);
+  health(0);
+  TEST_ASSERT_EQUAL_UINT8(0, player_health);
+  health(1);
+  health(1);
+  health(1);
+  TEST_ASSERT_EQUAL_UINT8(3, player_health);
+}
+
 int main(void){
   UNITY_BEGIN();
   RUN_TEST(test_example_from_spec);
@@ -75,5 +99,8 @@ int main(void){
   RUN_TEST(test_collision_x_out);
   RUN_TEST(test_collision_y_out);
   RUN_TEST(test_collision_hit);
+
+  RUN_TEST(test_score);
+  RUN_TEST(test_health);
   return UNITY_END();
 }
