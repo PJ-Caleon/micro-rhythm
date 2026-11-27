@@ -8,6 +8,7 @@
 #include "usart.h"
 #include "controller.h"
 #include "rng.h"
+#include "game_logic.h"
 #include "FreeRTOS.h"
 #include "task.h"
 
@@ -25,7 +26,7 @@ static void serial_task(void *arg){
   for (;;){
     //serial_print("pot",    player_position());  
     //serial_print("button", buttons_read());
-    serial_print("rng", random(0xABCDABCDu));
+    serial_print("falling", object_falling(1));
     vTaskDelay(pdMS_TO_TICKS(200));
   }
 }
